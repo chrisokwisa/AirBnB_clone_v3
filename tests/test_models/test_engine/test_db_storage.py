@@ -86,23 +86,28 @@ class TestFileStorage(unittest.TestCase):
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
     def test_save(self):
         """Test that save properly saves objects to file.json"""
+    
+        def test_get(self):
+        """check if get method returns state"""
+        real_state = storage.get("State", self.state.id)
+        fake_state = storage.get("State", "12345")
+        no_state = storage.get("", "")
 
-    def get(self, cls, id):
-        """Method to retrieve on object"""
-        if cls is not None and id is not None:
-            try:
-                return self.__session.query(classes[cls]).get(id)
-            except:
-                return None
+        self.assertEqual(real_state, self.state)
+        self.assertNotEqual(fake_state, self.state)
+        self.assertIsNone(no_state)
 
-        return None
+    def test_count(self):
+        """checks if count method returns correct numbers"""
+        state_count = storage.count("State")
+        city_count = storage.count("City")
+        place_count = storage.count("Place")
+        all_count = storage.count("")
 
-    def count(self, cls=None):
-        """method to count the number of objects in storage"""
-        if cls is not None:
-            try:
-                return len(self.all(classes[cls]))
-            except:
-                return None
-            else:
-                return len(self.all())
+        self.assertEqual(state_count, 3)
+        self.assertEqual(city_count, 4)
+        self.assertEqual(place_count, 0)
+        self.assertEqual(all_count, 7)
+
+if __name__ == '__main__':
+    unittest.main
