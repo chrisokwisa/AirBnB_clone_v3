@@ -115,7 +115,7 @@ class TestFileStorage(unittest.TestCase):
             js = f.read()
         self.assertEqual(json.loads(string), json.loads(js))
 
-        def test_get(self):
+    def test_get(self):
         """check if get method returns state"""
         real_state = storage.get("State", self.state.id)
         fake_state = storage.get("State", "12345")

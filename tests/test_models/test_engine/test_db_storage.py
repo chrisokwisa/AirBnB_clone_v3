@@ -84,10 +84,11 @@ class TestFileStorage(unittest.TestCase):
         """test that new adds an object to the database"""
 
     @unittest.skipIf(models.storage_t != 'db', "not testing db storage")
+
     def test_save(self):
         """Test that save properly saves objects to file.json"""
     
-        def test_get(self):
+    def test_get(self):
         """check if get method returns state"""
         real_state = storage.get("State", self.state.id)
         fake_state = storage.get("State", "12345")
