@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-"""creating an api"""
+"""
+creating an api
+"""
 
 import os
 from flask import Flask, jsonify, Response
