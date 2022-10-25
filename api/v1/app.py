@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-creating an api
+creating an api for AirBnB clone project
 """
 
 import os
