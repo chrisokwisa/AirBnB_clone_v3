@@ -1,6 +1,7 @@
 #!/usr/bin/python3
 """
-Sets up Flask application
+nput: 4 -> 3 -> 2 -> 1 -> 0 -> NULL
+# Output: 0 -> 1 -> 2 -> 3 -> 4 -> NULLSets up Flask application
 """
 
 
