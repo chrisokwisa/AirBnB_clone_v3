@@ -1,50 +1,30 @@
 #!/usr/bin/python3
-""" Flask Application 
-"""
+""" Index """
+from models.amenity import Amenity
+from models.city import City
+from models.place import Place
+from models.review import Review
+from models.state import State
+from models.user import User
 from models import storage
 from api.v1.views import app_views
-from os import environ
-from flask import Flask, render_template, make_response, jsonify
-from flask_cors import CORS
-from flasgger import Swagger
-from flasgger.utils import swag_from
-
-app = Flask(__name__)
-app.config['JSONIFY_PRETTYPRINT_REGULAR'] = True
-app.register_blueprint(app_views)
-cors = CORS(app, resources={r"/*": {"origins": "0.0.0.0"}})
+from flask import jsonify
 
 
-@app.teardown_appcontext
-def close_db(error):
-    """ Close Storage """
-    storage.close()
+@app_views.route('/status', methods=['GET'], strict_slashes=False)
+def status():
+    """ Status of API """
+    return jsonify({"status": "OK"})
 
 
-@app.errorhandler(404)
-def not_found(error):
-    """ 404 Error
-    ---
-    responses:
-      404:
-        description: a resource was not found
-    """
-    return make_response(jsonify({'error': "Not found"}), 404)
+@app_views.route('/stats', methods=['GET'], strict_slashes=False)
+def number_objects():
+    """ Retrieves the number of each objects by type """
+    classes = [Amenity, City, Place, Review, State, User]
+    names = ["amenities", "cities", "places", "reviews", "states", "users"]
 
-app.config['SWAGGER'] = {
-    'title': 'AirBnB clone Restful API',
-    'uiversion': 3
-}
+    num_objs = {}
+    for i in range(len(classes)):
+        num_objs[names[i]] = storage.count(classes[i])
 
-Swagger(app)
-
-
-if __name__ == "__main__":
-    """ Main Function """
-    host = environ.get('HBNB_API_HOST')
-    port = environ.get('HBNB_API_PORT')
-    if not host:
-        host = '0.0.0.0'
-    if not port:
-        port = '5000'
-    app.run(host=host, port=port, threaded=True)
+    return jsonify(num_objs)
