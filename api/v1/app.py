@@ -1,30 +1,27 @@
 #!/usr/bin/python3
-""" Index """
-from models.amenity import Amenity
-from models.city import City
-from models.place import Place
-from models.review import Review
-from models.state import State
-from models.user import User
+"""app.py to connect to API"""
+import os
 from models import storage
 from api.v1.views import app_views
-from flask import jsonify
+from flask import Flask, Blueprint, jsonify, make_response
+from flask_cors import CORS
 
 
-@app_views.route('/status', methods=['GET'], strict_slashes=False)
-def status():
-    """ Status of API """
-    return jsonify({"status": "OK"})
+app = Flask(__name__)
+app.register_blueprint(app_views)
+cors = CORS(app, resources={r"/api/v1/*": {"origins": "*"}})
 
 
-@app_views.route('/stats', methods=['GET'], strict_slashes=False)
-def number_objects():
-    """ Retrieves the number of each objects by type """
-    classes = [Amenity, City, Place, Review, State, User]
-    names = ["amenities", "cities", "places", "reviews", "states", "users"]
+@app.teardown_appcontext
+def teardown_appcontext(code):
+    """teardown_appcontext"""
+    storage.close()
 
-    num_objs = {}
-    for i in range(len(classes)):
-        num_objs[names[i]] = storage.count(classes[i])
 
-    return jsonify(num_objs)
+@app.errorhandler(404)
+def page_not_found(error):
+    return make_response(jsonify({'error': 'Not found'}), 404)
+
+if __name__ == "__main__":
+    app.run(host=os.getenv('HBNB_API_HOST', '0.0.0.0'),
+            port=int(os.getenv('HBNB_API_PORT', '5000')))
