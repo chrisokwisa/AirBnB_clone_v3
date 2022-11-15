@@ -71,7 +71,7 @@ class FileStorage:
         """Deserialize JSON file to objects"""
         self.reload()
 
-    def get(self, cls=None, id):
+    def get(self, cls, id):
         """Retrieve an object"""
         if cls is not None:
             objs = self.all(cls).values()
