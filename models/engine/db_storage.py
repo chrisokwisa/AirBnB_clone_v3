@@ -90,8 +90,8 @@ class DBStorage:
         """A method to count the number of objects in storage"""
         if cls is not None:
             try:
-                return len(self.all(classes[cls]))
+                return len(self.all(cls).values())
             except Exception:
                 return None
         else:
-            return len(self.all())
+            return len(self.all().values())

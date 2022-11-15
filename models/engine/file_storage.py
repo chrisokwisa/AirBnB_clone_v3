@@ -91,4 +91,4 @@ class FileStorage:
             except Exception:
                 return 0
         else:
-            return len(self.all())
+            return len(self.all().values())
