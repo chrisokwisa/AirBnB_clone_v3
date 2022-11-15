@@ -55,7 +55,7 @@ class FileStorage:
             for key in jo:
                 self.__objects[key] = classes[jo[key]["__class__"]](**jo[key])
         B
-        except:
+        except Exception:
             pass
 
     def delete(self, obj=None):
@@ -76,7 +76,7 @@ class FileStorage:
                 if obj.id == id:
                     return obj
             return None
-        
+
         return None
 
     def count(self, cls=None):

@@ -81,8 +81,8 @@ class DBStorage:
         """Dispose of current session if active"""
         self.__session.remove()
 
-    def get(self, cls, id)
-        """"A method to retrieve one object"""
+    def get(self, cls, id):
+        """A method to retrieve an object"""
         if cls is not None:
             objs = self.all(cls).values()
             for obj in objs:
